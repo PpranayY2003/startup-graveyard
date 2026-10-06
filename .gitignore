@@ -3,9 +3,12 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+*.db
 data/raw/*
 data/clean/*
 !data/raw/.gitkeep
 !data/clean/.gitkeep
+powerbi/exports/*
+!powerbi/exports/.gitkeep
 *.pbi/
 .pbi_cache/

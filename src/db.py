@@ -1,25 +1,21 @@
 import os
-from urllib.parse import quote_plus
-
+import sqlite3
+from pathlib import Path
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, text
+
+load_dotenv()
+
+DB_PATH = Path(os.getenv("DB_PATH", "data/startup_graveyard.db"))
 
 
-def get_engine():
-    load_dotenv()
-    driver = os.environ["DB_DRIVER"]
-    server = os.environ["DB_SERVER"]
-    database = os.environ["DB_NAME"]
-    odbc_string = (
-        f"DRIVER={{{driver}}};"
-        f"SERVER={server};"
-        f"DATABASE={database};"
-        "Trusted_Connection=yes;"
-        "TrustServerCertificate=yes;"
-    )
-    return create_engine(f"mssql+pyodbc:///?odbc_connect={quote_plus(odbc_string)}")
+def get_conn() -> sqlite3.Connection:
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA foreign_keys = ON")
+    return conn
 
 
 if __name__ == "__main__":
-    with get_engine().connect() as connection:
-        print(connection.execute(text("SELECT DB_NAME()")).scalar())
+    with get_conn() as conn:
+        print("SQLite", conn.execute("SELECT sqlite_version()").fetchone()[0])
+        print("DB file:", DB_PATH.resolve())
