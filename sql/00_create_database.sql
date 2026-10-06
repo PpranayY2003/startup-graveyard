@@ -1,0 +1,8 @@
+CREATE DATABASE StartupGraveyard;
+GO
+USE StartupGraveyard;
+GO
+CREATE SCHEMA stg;
+GO
+CREATE SCHEMA dw;
+GO
