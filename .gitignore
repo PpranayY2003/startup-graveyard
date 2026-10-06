@@ -11,4 +11,4 @@ data/clean/*
 powerbi/exports/*
 !powerbi/exports/.gitkeep
 *.pbi/
-.pbi_cache/
+.pbi_cache/data/*.db
